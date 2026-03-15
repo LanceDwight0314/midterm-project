@@ -1,75 +1,82 @@
 # NEULibraryGuard 🛡️
 
-NEULibraryGuard is a modern, AI-powered visitor management and logging system designed for the New Era University Library. It provides a seamless check-in experience for students and faculty while giving administrators powerful tools to monitor library usage and manage access.
+NEULibraryGuard is a high-performance, AI-integrated visitor management and security logging system specifically engineered for the **New Era University Library**. It replaces traditional paper logs with a sophisticated digital terminal that enhances security and provides personalized academic assistance.
 
-## 🚀 Features
+## 🌟 Core Features
 
-- **Institutional Check-In Terminal**: A user-friendly interface for students and faculty to log their visits using their Institutional ID or Email.
-- **AI-Powered Librarian**: Leverages Google Gemini via Genkit to provide personalized resource suggestions based on the visitor's stated purpose (e.g., thesis research, leisure reading).
-- **Secure Visitor Registration**: Allows new visitors to enroll their institutional credentials into the system.
-- **Admin Dashboard**:
-  - **Real-time Analytics**: Visual trends of visitor traffic using Recharts.
-  - **Access Control**: Ability to block or unblock specific IDs for security purposes.
-  - **Visitor Logs**: Detailed historical records of all entries with search and filter capabilities.
-  - **Automated Reports**: Quick generation of visit statistics.
-- **Professional UI**: Built with a clean, academic-focused aesthetic using ShadCN UI and Tailwind CSS.
+### 1. Institutional Check-In Terminal
+- **Dual-Mode Authentication**: Supports both alphanumeric School IDs and Institutional Google Emails (`@neu.edu.ph`).
+- **Purpose Selection**: Intelligent categorization of visits (Thesis Research, Leisure Reading, Computer Use, etc.).
+- **Real-time Validation**: Instant cross-referencing with the visitor database to prevent unauthorized access.
 
-## 🛠️ Tech Stack
+### 2. AI Librarian (Powered by Genkit & Gemini)
+- **Context-Aware Suggestions**: Leverages Google Gemini 2.5 Flash via Firebase Genkit to provide immediate resource recommendations based on the visitor's purpose.
+- **Academic Routing**: Suggests specific library sections (e.g., Periodicals, Reserve Section) to streamline the student's research process.
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **AI Engine**: [Genkit 1.x](https://firebase.google.com/docs/genkit) with Google AI (Gemini 2.5 Flash)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [ShadCN UI](https://ui.shadcn.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Charts**: [Recharts](https://recharts.org/)
-- **State Management**: React Hooks & Local Storage (Mock DB)
-- **Language**: TypeScript
+### 3. Visitor Enrollment System
+- **Self-Service Registration**: Allows new students and faculty to securely link their institutional credentials to the system.
+- **College-Specific Data**: Captures department information for granular usage analytics.
 
-## 📋 Prerequisites
+### 4. Secure Admin Portal
+- **Protected Access**: Dashboard secured with management credentials (Default: `123`).
+- **Interactive Analytics**: Visual traffic trends powered by Recharts, showing peak hours and daily visitor counts.
+- **Dynamic Access Control**: Ability for library administrators to "Block" or "Unblock" specific IDs in real-time.
+- **Enriched Logging**: A historical audit trail of all library entries with search and filter capabilities.
 
-- Node.js 18 or later
-- A Google Gemini API Key (for the AI suggestions feature)
+## 🛠️ Technical Architecture
 
-## ⚙️ Getting Started
+| Layer | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router) |
+| **AI Orchestration** | Genkit 1.x |
+| **LLM Model** | Google Gemini 2.5 Flash |
+| **UI Components** | ShadCN UI |
+| **Styling** | Tailwind CSS (with CSS Variables for Theming) |
+| **Icons** | Lucide React |
+| **Charts** | Recharts |
+| **State/Storage** | LocalStorage API (Browser-persistent Mock Database) |
+| **Language** | TypeScript |
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/neu-library-guard.git
-   cd neu-library-guard
-   ```
+## 🚀 Installation & Setup
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/your-org/neu-library-guard.git
+    cd neu-library-guard
+    ```
 
-3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory and add your Gemini API Key:
-   ```env
-   GOOGLE_GENAI_API_KEY=your_api_key_here
-   ```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
 
-4. **Run the development server**:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:9002](http://localhost:9002) to view the terminal.
+3.  **Configure Environment**:
+    Create a `.env` file in the root directory:
+    ```env
+    GOOGLE_GENAI_API_KEY=your_gemini_api_key_here
+    ```
 
-## 🔐 Admin Access
+4.  **Launch the System**:
+    ```bash
+    npm run dev
+    ```
+    - **Public Terminal**: `http://localhost:9002/`
+    - **Admin Dashboard**: `http://localhost:9002/admin/login` (Password: `123`)
 
-The Admin Portal is accessible at `/admin/login`.
-- **Default Password**: `123`
+## 📁 Project Structure Highlights
 
-## 📁 Project Structure
+- `src/ai/flows`: Contains the Genkit logic for library resource suggestions.
+- `src/app/admin`: Secure administrative routes for analytics and access control.
+- `src/app/lib/db.ts`: Local database interface for managing visitors and logs.
+- `src/components/terminal`: The core interactive check-in experience.
+- `src/app/globals.css`: Customized ShadCN theme with professional academic styling.
 
-- `src/app`: Next.js pages and layouts.
-- `src/components`: Reusable UI components (ShadCN).
-- `src/ai`: Genkit flows and AI prompt definitions.
-- `src/app/lib`: Database utilities and mock data handling.
-- `src/hooks`: Custom React hooks for UI and state.
+## 🔐 Security & Compliance
 
-## ⚖️ License
-
-This project is developed for institutional use at New Era University. All rights reserved.
+- **Authentication**: Institutional ID validation ensures only active community members can log entries.
+- **Data Privacy**: Local storage approach for the prototype ensures data stays within the client environment.
+- **Admin Security**: Restricted management routes prevent unauthorized modification of access lists.
 
 ---
-*Built with ❤️ by the Library IT Office*
+
+*This project is an official prototype for the New Era University Library Information Technology Office.*
