@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UserPlus, ArrowLeft, GraduationCap, IdentificationCard, ShieldCheck } from "lucide-react"
+import { UserPlus, ArrowLeft, GraduationCap, IdCard, ShieldCheck } from "lucide-react"
 import { addVisitor } from "@/app/lib/db"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
@@ -103,7 +103,7 @@ export default function RegisterPage() {
                   onChange={(e) => setFormData({ ...formData, id: e.target.value })}
                   className="pl-10 h-11 bg-secondary/30 border-none focus-visible:ring-1"
                 />
-                <IdentificationCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               </div>
             </div>
 
