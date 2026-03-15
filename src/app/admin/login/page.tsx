@@ -37,23 +37,28 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-secondary/30 p-4">
-      <div className="mb-8 flex items-center gap-3">
-        <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white shadow-xl">
-          <ShieldCheck className="w-8 h-8" />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 relative overflow-hidden bg-grid-slate">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+      
+      <div className="mb-10 flex flex-col items-center gap-3 relative z-10">
+        <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-primary/20">
+          <ShieldCheck className="w-9 h-9" />
         </div>
-        <h1 className="text-2xl font-headline font-bold text-primary">NEULibraryGuard</h1>
+        <div className="text-center">
+          <h1 className="text-2xl font-headline font-bold text-foreground">Guard Admin</h1>
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">Authorized Personnel Only</p>
+        </div>
       </div>
 
-      <Card className="w-full max-w-md border-none shadow-2xl">
+      <Card className="w-full max-w-md border-none shadow-2xl bg-white/90 backdrop-blur-xl ring-1 ring-border/50 relative z-10">
         <CardHeader className="text-center space-y-1">
-          <CardTitle className="text-2xl font-headline">Admin Access</CardTitle>
-          <CardDescription>Enter the management password to proceed</CardDescription>
+          <CardTitle className="text-2xl font-headline">Management Login</CardTitle>
+          <CardDescription>Enter security credential to access dashboard</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">Management Password</Label>
+              <Label htmlFor="password">Security Password</Label>
               <div className="relative">
                 <Input 
                   id="password" 
@@ -64,31 +69,36 @@ export default function AdminLoginPage() {
                     setPassword(e.target.value)
                     if (error) setError(false)
                   }}
-                  className={error ? "border-destructive ring-destructive" : ""}
+                  className={`h-12 pr-10 bg-secondary/30 border-none focus-visible:ring-1 ${error ? "ring-1 ring-destructive" : ""}`}
                 />
                 <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               </div>
               {error && (
-                <p className="text-xs text-destructive flex items-center gap-1 mt-1">
-                  <AlertCircle className="w-3 h-3" /> Invalid credentials
+                <p className="text-xs text-destructive flex items-center gap-1.5 mt-2 animate-in fade-in slide-in-from-top-1">
+                  <AlertCircle className="w-3.5 h-3.5" /> Invalid management password
                 </p>
               )}
             </div>
-            <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90">
-              Sign In to Dashboard
+            <Button type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 text-md font-bold shadow-lg shadow-primary/20">
+              Unlock Dashboard
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center border-t py-4">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-            Back to Terminal
+        <CardFooter className="flex justify-center border-t border-border/50 py-5">
+          <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+            Return to Public Terminal
           </Link>
         </CardFooter>
       </Card>
       
-      <p className="mt-8 text-xs text-muted-foreground">
-        Restricted area. Unauthorized access is logged.
-      </p>
+      <div className="mt-12 text-center relative z-10">
+        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.3em]">
+          Restricted Security Zone
+        </p>
+        <p className="text-[9px] text-muted-foreground/60 mt-2 italic">
+          Unauthorized access attempts are monitored and logged to system server.
+        </p>
+      </div>
     </div>
   )
 }

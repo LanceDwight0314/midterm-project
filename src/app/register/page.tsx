@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UserPlus, ArrowLeft, GraduationCap, IdentificationCard } from "lucide-react"
+import { UserPlus, ArrowLeft, GraduationCap, IdentificationCard, ShieldCheck } from "lucide-react"
 import { addVisitor } from "@/app/lib/db"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
@@ -73,52 +73,55 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-secondary/30 p-4 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full -mr-64 -mt-64 blur-3xl" />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 relative overflow-hidden bg-grid-slate">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full -mr-64 -mt-64 blur-[100px] pointer-events-none" />
       
-      <div className="mb-8 flex flex-col items-center gap-2">
-        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white shadow-2xl">
-          <UserPlus className="w-10 h-10" />
-        </div>
-        <h1 className="text-3xl font-headline font-bold text-primary mt-4">Visitor Registration</h1>
-        <p className="text-muted-foreground">Register your institutional ID for library access</p>
+      <div className="mb-8 flex flex-col items-center text-center gap-2">
+        <Link href="/" className="mb-4">
+          <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-primary/20 hover:scale-105 transition-transform">
+            <ShieldCheck className="w-8 h-8" />
+          </div>
+        </Link>
+        <h1 className="text-3xl font-headline font-bold text-foreground">Visitor Registration</h1>
+        <p className="text-muted-foreground max-w-xs">Link your student or faculty ID to the digital library tracking system</p>
       </div>
 
-      <Card className="w-full max-w-lg border-none shadow-2xl bg-white/90 backdrop-blur-sm">
+      <Card className="w-full max-w-lg border-none shadow-2xl bg-white/90 backdrop-blur-xl ring-1 ring-border/50">
         <CardHeader>
-          <CardTitle className="font-headline text-xl">Create Account</CardTitle>
-          <CardDescription>Enter your official credentials as provided by the university</CardDescription>
+          <CardTitle className="font-headline text-xl">Institutional Enrollment</CardTitle>
+          <CardDescription>Use your officially issued school credentials</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleRegister} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="id">School ID or Institutional Email</Label>
+              <Label htmlFor="id">Institutional ID / Email</Label>
               <div className="relative">
                 <Input 
                   id="id" 
-                  placeholder="e.g. 2023-0001 or name@neu.edu.ph"
+                  placeholder="e.g. 2023-0001 or juan.dc@neu.edu.ph"
                   value={formData.id}
                   onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-                  className="pl-10"
+                  className="pl-10 h-11 bg-secondary/30 border-none focus-visible:ring-1"
                 />
                 <IdentificationCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">Full Name (Legal)</Label>
               <Input 
                 id="name" 
-                placeholder="Juan Dela Cruz"
+                placeholder="Juan S. Dela Cruz"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="h-11 bg-secondary/30 border-none focus-visible:ring-1"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="college">College / Department</Label>
+              <Label htmlFor="college">Department / College</Label>
               <Select onValueChange={(value) => setFormData({ ...formData, college: value })}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full h-11 bg-secondary/30 border-none focus-visible:ring-1">
                   <SelectValue placeholder="Select your college" />
                 </SelectTrigger>
                 <SelectContent>
@@ -131,14 +134,14 @@ export default function RegisterPage() {
               </Select>
             </div>
 
-            <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 mt-6" disabled={loading}>
-              {loading ? "Registering..." : "Complete Registration"}
+            <Button type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 text-md font-bold mt-6 shadow-lg shadow-primary/20" disabled={loading}>
+              {loading ? "Processing..." : "Register Account"}
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center border-t py-4">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Terminal
+        <CardFooter className="flex justify-center border-t border-border/50 py-5">
+          <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary flex items-center gap-2 transition-colors group">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Return to Terminal
           </Link>
         </CardFooter>
       </Card>
