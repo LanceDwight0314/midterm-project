@@ -20,6 +20,7 @@ const COLLEGES = [
   "College of Business Administration",
   "College of Education",
   "Faculty of Arts",
+  "College of Information and Computer Studies",
   "Graduate School",
   "Business Office/Staff"
 ]

@@ -14,9 +14,6 @@ export type VisitLog = {
 
 // Initial mock data
 const MOCK_VISITORS: Visitor[] = [
-  { id: "2023-0001", name: "John Doe", college: "College of Computing", isBlocked: false },
-  { id: "2023-0002", name: "Jane Smith", college: "College of Nursing", isBlocked: false },
-  { id: "faculty.doe@neu.edu.ph", name: "Dr. Alice Doe", college: "Faculty of Arts", isBlocked: false },
   { id: "blocked.user@neu.edu.ph", name: "Bob Miller", college: "Business Office", isBlocked: true },
 ];
 
