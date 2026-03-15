@@ -17,7 +17,7 @@ export default function Home() {
           <span className="font-headline font-bold text-xl text-primary">NEULibraryGuard</span>
         </div>
         <Link 
-          href="/admin/dashboard" 
+          href="/admin/login" 
           className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors bg-white px-4 py-2 rounded-full border shadow-sm"
         >
           Admin Login
