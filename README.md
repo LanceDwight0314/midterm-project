@@ -1,3 +1,4 @@
+
 # NEULibraryGuard 🛡️
 
 NEULibraryGuard is a high-performance, AI-integrated visitor management and security logging system specifically engineered for the **New Era University Library**. It replaces traditional paper logs with a sophisticated digital terminal that enhances security and provides personalized academic assistance.
