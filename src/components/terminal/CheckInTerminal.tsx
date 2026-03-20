@@ -214,11 +214,8 @@ export function CheckInTerminal({ preAuthenticatedVisitor, onSessionReset }: Che
              </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button onClick={reset} className="w-full bg-primary h-12 text-lg font-bold gap-2">
-              <CheckCircle2 className="w-5 h-5" /> Complete Visit
-            </Button>
             {onSessionReset && (
-              <Button variant="outline" onClick={onSessionReset} className="w-full text-muted-foreground gap-2 border-primary/20">
+              <Button onClick={onSessionReset} className="w-full bg-primary h-12 text-lg font-bold gap-2">
                 <Home className="w-4 h-4" /> Return to Front Page
               </Button>
             )}
