@@ -1,4 +1,5 @@
-https://midterm-project-steel.vercel.app/<br>
+https://midterm-project-steel.vercel.app/
+ADMIN PASSWORD IS 123<br>
 # NEULibraryGuard 🛡️
 
 NEULibraryGuard is a high-performance, AI-integrated visitor management and security logging system specifically engineered for the **New Era University Library**. It replaces traditional paper logs with a sophisticated digital terminal that enhances security and provides personalized academic assistance.
