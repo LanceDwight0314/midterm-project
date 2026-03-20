@@ -5,22 +5,22 @@ NEULibraryGuard is a high-performance, AI-integrated visitor management and secu
 ## 🌟 Core Features
 
 ### 1. Institutional Check-In Terminal
-- **Dual-Mode Authentication**: Supports both alphanumeric School IDs and Institutional Google Emails (`@neu.edu.ph`).
-- **Purpose Selection**: Intelligent categorization of visits (Thesis Research, Leisure Reading, Computer Use, etc.).
+- **Unified Authentication**: Supports role-based access for both Students and Administrators via Institutional Google Emails (`@neu.edu.ph`).
+- **Purpose Selection**: Intelligent categorization of visits (Thesis Research, Leisure Reading, Computer Use, etc.) to help the library track resource demand.
 - **Real-time Validation**: Instant cross-referencing with the visitor database to prevent unauthorized access.
 
 ### 2. AI Librarian (Powered by Genkit & Gemini)
-- **Context-Aware Suggestions**: Leverages Google Gemini 2.5 Flash via Firebase Genkit to provide immediate resource recommendations based on the visitor's purpose.
-- **Academic Routing**: Suggests specific library sections (e.g., Periodicals, Reserve Section) to streamline the student's research process.
+- **Context-Aware Suggestions**: Leverages Google Gemini 2.5 Flash via Firebase Genkit to provide immediate resource recommendations based on the visitor's declared purpose.
+- **Academic Routing**: Suggests specific library sections (e.g., Periodicals, Reserve Section, Graduate School Stacks) to streamline the student's research process.
 
 ### 3. Visitor Enrollment System
 - **Self-Service Registration**: Allows new students and faculty to securely link their institutional credentials to the system.
-- **College-Specific Data**: Captures department information for granular usage analytics.
+- **College-Specific Data**: Captures department information for granular usage analytics and reporting.
 
 ### 4. Secure Admin Portal
-- **Protected Access**: Dashboard secured with management credentials (Default: `123`).
+- **Protected Access**: Dashboard secured with management credentials (Default: `123` for recognized admin emails).
 - **Interactive Analytics**: Visual traffic trends powered by Recharts, showing peak hours and daily visitor counts.
-- **Dynamic Access Control**: Ability for library administrators to "Block" or "Unblock" specific IDs in real-time.
+- **Dynamic Access Control**: Ability for library administrators to "Block" or "Unblock" specific IDs in real-time to maintain library safety.
 - **Enriched Logging**: A historical audit trail of all library entries with search and filter capabilities.
 
 ## 🛠️ Technical Architecture
@@ -69,13 +69,14 @@ NEULibraryGuard is a high-performance, AI-integrated visitor management and secu
 - `src/app/admin`: Secure administrative routes for analytics and access control.
 - `src/app/lib/db.ts`: Local database interface for managing visitors and logs.
 - `src/components/terminal`: The core interactive check-in experience.
+- `src/components/auth`: Unified login logic for role-based access.
 - `src/app/globals.css`: Customized ShadCN theme with professional academic styling.
 
 ## 🔐 Security & Compliance
 
+- **Role-Based Access Control (RBAC)**: Distinguishes between public terminal users and authorized administrators.
 - **Authentication**: Institutional ID validation ensures only active community members can log entries.
-- **Data Privacy**: Local storage approach for the prototype ensures data stays within the client environment.
-- **Admin Security**: Restricted management routes prevent unauthorized modification of access lists.
+- **Data Privacy**: Local storage approach for the prototype ensures data stays within the client environment during the evaluation phase.
 
 ---
 
