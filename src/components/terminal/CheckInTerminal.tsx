@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { findVisitor, saveLog, type Visitor } from "@/app/lib/db"
 import { useToast } from "@/hooks/use-toast"
-import { Scan, Mail, CheckCircle2, ArrowLeft, Lightbulb, UserPlus, LogOut } from "lucide-react"
+import { Scan, Mail, CheckCircle2, ArrowLeft, Lightbulb, UserPlus, LogOut, Home } from "lucide-react"
 import { suggestLibraryResources, type SuggestLibraryResourcesOutput } from "@/ai/flows/suggest-library-resources"
 import Link from "next/link"
 
@@ -93,7 +93,6 @@ export function CheckInTerminal({ preAuthenticatedVisitor, onSessionReset }: Che
   }
 
   const reset = () => {
-    // If we came from a formal login, we might want to stay in purpose or go back to login
     if (preAuthenticatedVisitor) {
       setStep("purpose")
       setAiSuggestions(null)
@@ -185,7 +184,7 @@ export function CheckInTerminal({ preAuthenticatedVisitor, onSessionReset }: Che
             <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
             <CardTitle className="text-3xl font-headline font-bold text-primary">Entry Confirmed!</CardTitle>
             <CardDescription className="text-lg">
-              Enjoy your visit, <span className="text-foreground font-bold">{currentVisitor.name}</span>
+              You have been logged. <span className="text-foreground font-bold">You may continue your visit</span>, {currentVisitor.name}.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -215,12 +214,12 @@ export function CheckInTerminal({ preAuthenticatedVisitor, onSessionReset }: Che
              </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button onClick={reset} className="w-full bg-primary h-12 text-lg font-bold">
-              Complete Visit
+            <Button onClick={reset} className="w-full bg-primary h-12 text-lg font-bold gap-2">
+              <CheckCircle2 className="w-5 h-5" /> Complete Visit
             </Button>
             {onSessionReset && (
-              <Button variant="ghost" onClick={onSessionReset} className="w-full text-muted-foreground gap-2">
-                <LogOut className="w-4 h-4" /> Sign Out
+              <Button variant="outline" onClick={onSessionReset} className="w-full text-muted-foreground gap-2 border-primary/20">
+                <Home className="w-4 h-4" /> Return to Front Page
               </Button>
             )}
           </CardFooter>

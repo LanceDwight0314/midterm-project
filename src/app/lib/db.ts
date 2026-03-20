@@ -15,12 +15,13 @@ export type VisitLog = {
 // Initial mock data
 const MOCK_VISITORS: Visitor[] = [
   { id: "blocked.user@neu.edu.ph", name: "Bob Miller", college: "Business Office", isBlocked: true },
+  { id: "jcesperanza@neu.edu.ph", name: "J.C. Esperanza", college: "College of Computing", isBlocked: false },
 ];
 
 const INITIAL_LOGS: VisitLog[] = [
   { id: "1", visitorId: "2023-0001", timestamp: new Date(Date.now() - 86400000 * 2).toISOString(), purpose: "reading books" },
   { id: "2", visitorId: "2023-0002", timestamp: new Date(Date.now() - 86400000).toISOString(), purpose: "research for thesis" },
-  { id: "3", visitorId: "2023-0001", timestamp: new Date().toISOString(), purpose: "use of computer" },
+  { id: "3", visitorId: "jcesperanza@neu.edu.ph", timestamp: new Date().toISOString(), purpose: "use of computer" },
 ];
 
 export const getVisitors = (): Visitor[] => {
