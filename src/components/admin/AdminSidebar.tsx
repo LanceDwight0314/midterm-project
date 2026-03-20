@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, ShieldAlert, FileText, ArrowLeft, ShieldCheck, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, ShieldAlert, FileText, ArrowLeft, ShieldCheck, LogOut, UserCircle } from "lucide-react"
 
 const NAV_ITEMS = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -17,6 +17,14 @@ export function AdminSidebar() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("admin_authenticated")
+    sessionStorage.removeItem("user_role")
+    sessionStorage.removeItem("user_email")
+    router.push("/")
+  }
+
+  const handleSwitchToStudent = () => {
+    sessionStorage.removeItem("admin_authenticated")
+    sessionStorage.setItem("user_role", "student")
     router.push("/")
   }
 
@@ -51,19 +59,19 @@ export function AdminSidebar() {
 
       <div className="p-4 border-t space-y-2">
         <button
-          onClick={handleLogout}
+          onClick={handleSwitchToStudent}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-primary transition-all"
+        >
+          <UserCircle className="w-5 h-5" />
+          Switch to Student
+        </button>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-red-50 hover:text-red-600 transition-all"
         >
           <LogOut className="w-5 h-5" />
           Log Out
         </button>
-        <Link
-          href="/"
-          className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-red-50 hover:text-red-600 transition-all"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Exit Terminal
-        </Link>
       </div>
     </div>
   )

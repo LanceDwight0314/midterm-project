@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { findVisitor, saveLog, type Visitor } from "@/app/lib/db"
 import { useToast } from "@/hooks/use-toast"
-import { Scan, Mail, CheckCircle2, ArrowLeft, Lightbulb, UserPlus } from "lucide-react"
+import { Scan, Mail, CheckCircle2, ArrowLeft, Lightbulb, UserPlus, LogOut } from "lucide-react"
 import { suggestLibraryResources, type SuggestLibraryResourcesOutput } from "@/ai/flows/suggest-library-resources"
 import Link from "next/link"
 
@@ -20,7 +20,12 @@ const PURPOSES = [
   "doing assignments"
 ]
 
-export function CheckInTerminal() {
+interface CheckInTerminalProps {
+  preAuthenticatedVisitor?: Visitor | null;
+  onSessionReset?: () => void;
+}
+
+export function CheckInTerminal({ preAuthenticatedVisitor, onSessionReset }: CheckInTerminalProps) {
   const [step, setStep] = useState<"auth" | "purpose" | "success">("auth")
   const [idInput, setIdInput] = useState("")
   const [currentVisitor, setCurrentVisitor] = useState<Visitor | null>(null)
@@ -29,6 +34,13 @@ export function CheckInTerminal() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false)
   
   const { toast } = useToast()
+
+  useEffect(() => {
+    if (preAuthenticatedVisitor) {
+      setCurrentVisitor(preAuthenticatedVisitor)
+      setStep("purpose")
+    }
+  }, [preAuthenticatedVisitor])
 
   const handleAuth = (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -69,7 +81,6 @@ export function CheckInTerminal() {
     saveLog(newLog)
     setStep("success")
     
-    // Fetch AI Suggestions in the background
     setLoadingSuggestions(true)
     try {
       const suggestions = await suggestLibraryResources({ purposeOfVisit: purpose })
@@ -82,27 +93,33 @@ export function CheckInTerminal() {
   }
 
   const reset = () => {
-    setStep("auth")
-    setIdInput("")
-    setCurrentVisitor(null)
-    setPurpose(PURPOSES[0])
-    setAiSuggestions(null)
+    // If we came from a formal login, we might want to stay in purpose or go back to login
+    if (preAuthenticatedVisitor) {
+      setStep("purpose")
+      setAiSuggestions(null)
+    } else {
+      setStep("auth")
+      setIdInput("")
+      setCurrentVisitor(null)
+      setPurpose(PURPOSES[0])
+      setAiSuggestions(null)
+    }
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {step === "auth" && (
+    <div className="max-w-xl w-full p-4">
+      {step === "auth" && !preAuthenticatedVisitor && (
         <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center">
             <div className="mx-auto bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
               <Scan className="w-8 h-8 text-primary" />
             </div>
-            <CardTitle className="text-3xl font-headline font-bold text-primary">NEU Library</CardTitle>
+            <CardTitle className="text-3xl font-headline font-bold text-primary">Quick Terminal</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleAuth} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="idInput" className="text-sm font-medium text-muted-foreground">School ID or Google Email</Label>
+                <Label htmlFor="idInput" className="text-sm font-medium text-muted-foreground">Institutional ID or Email</Label>
                 <div className="relative">
                   <Input 
                     id="idInput"
@@ -115,91 +132,97 @@ export function CheckInTerminal() {
                 </div>
               </div>
               <Button type="submit" className="w-full h-12 text-lg font-bold bg-accent hover:bg-accent/90">
-                Authenticate Access
+                Check In Now
               </Button>
             </form>
 
             <div className="mt-6 pt-6 border-t">
-              <p className="text-sm text-center text-muted-foreground mb-4">First time here?</p>
               <Link href="/register" className="w-full">
                 <Button variant="outline" className="w-full gap-2 text-primary border-primary/20 hover:bg-primary/5">
-                  <UserPlus className="w-4 h-4" /> Register New Account
+                  <UserPlus className="w-4 h-4" /> Register New ID
                 </Button>
               </Link>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-center text-xs text-muted-foreground">
-            System monitored by NEU Information Services
-          </CardFooter>
         </Card>
       )}
 
       {step === "purpose" && currentVisitor && (
-        <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-sm">
+        <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-sm animate-in zoom-in-95">
           <CardHeader>
             <CardTitle className="font-headline text-2xl">Purpose of Visit</CardTitle>
-            <CardDescription>Welcome back, <span className="font-bold text-primary">{currentVisitor.name}</span> ({currentVisitor.college})</CardDescription>
+            <CardDescription>
+              Authenticated: <span className="font-bold text-primary">{currentVisitor.name}</span>
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <RadioGroup value={purpose} onValueChange={setPurpose} className="grid gap-4">
               {PURPOSES.map((p) => (
-                <div key={p} className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer">
+                <div key={p} className="flex items-center space-x-3 p-4 border rounded-xl hover:bg-secondary/50 transition-colors cursor-pointer">
                   <RadioGroupItem value={p} id={p} />
-                  <Label htmlFor={p} className="flex-1 capitalize font-medium cursor-pointer">{p}</Label>
+                  <Label htmlFor={p} className="flex-1 capitalize font-medium cursor-pointer text-base">{p}</Label>
                 </div>
               ))}
             </RadioGroup>
           </CardContent>
           <CardFooter className="flex gap-3">
-            <Button variant="outline" onClick={() => setStep("auth")} className="flex-1">
-              <ArrowLeft className="w-4 h-4 mr-2" /> Back
-            </Button>
-            <Button onClick={handleCheckIn} className="flex-[2] bg-primary">
-              Confirm Check-in
+            {!preAuthenticatedVisitor && (
+              <Button variant="outline" onClick={() => setStep("auth")} className="flex-1">
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+              </Button>
+            )}
+            <Button onClick={handleCheckIn} className="flex-[2] bg-primary h-12 text-lg font-bold">
+              Confirm Entry
             </Button>
           </CardFooter>
         </Card>
       )}
 
       {step === "success" && currentVisitor && (
-        <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
-          <div className="h-2 bg-accent w-full" />
+        <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden animate-in fade-in">
+          <div className="h-2 bg-green-500 w-full" />
           <CardHeader className="text-center">
-            <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-4 animate-bounce" />
-            <CardTitle className="text-4xl font-headline font-bold text-primary">Welcome to NEU Library!</CardTitle>
-            <CardDescription className="text-xl mt-2">
-              Check-in successful for <span className="text-foreground font-bold">{currentVisitor.name}</span>
+            <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <CardTitle className="text-3xl font-headline font-bold text-primary">Entry Confirmed!</CardTitle>
+            <CardDescription className="text-lg">
+              Enjoy your visit, <span className="text-foreground font-bold">{currentVisitor.name}</span>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-             <div className="bg-secondary/30 p-4 rounded-xl space-y-3">
+             <div className="bg-secondary/40 p-5 rounded-2xl space-y-4 border border-secondary">
                 <div className="flex items-center gap-2 text-primary font-bold">
-                  <Lightbulb className="w-5 h-5" />
-                  <span>AI Librarian Suggestions</span>
+                  <Lightbulb className="w-5 h-5 text-accent" />
+                  <span>Personalized Library Suggestions</span>
                 </div>
                 {loadingSuggestions ? (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
+                    <div className="h-4 bg-muted animate-pulse rounded w-full" />
                     <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
-                    <div className="h-4 bg-muted animate-pulse rounded w-1/2" />
+                    <div className="h-4 bg-muted animate-pulse rounded w-5/6" />
                   </div>
                 ) : aiSuggestions ? (
-                  <ul className="space-y-3">
+                  <ul className="space-y-4">
                     {aiSuggestions.suggestions.map((s, i) => (
-                      <li key={i} className="text-sm">
-                        <strong className="block text-primary">{s.name}</strong>
-                        <span className="text-muted-foreground">{s.description}</span>
+                      <li key={i} className="text-sm bg-white/50 p-3 rounded-lg border border-border/20">
+                        <strong className="block text-primary text-base mb-1">{s.name}</strong>
+                        <span className="text-muted-foreground leading-relaxed">{s.description}</span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-muted-foreground">Preparing resources for your {purpose}...</p>
+                  <p className="text-sm text-muted-foreground animate-pulse">Syncing with digital stacks...</p>
                 )}
              </div>
           </CardContent>
-          <CardFooter>
-            <Button onClick={reset} className="w-full bg-primary h-12 text-lg">
-              Next Visitor
+          <CardFooter className="flex flex-col gap-3">
+            <Button onClick={reset} className="w-full bg-primary h-12 text-lg font-bold">
+              Complete Visit
             </Button>
+            {onSessionReset && (
+              <Button variant="ghost" onClick={onSessionReset} className="w-full text-muted-foreground gap-2">
+                <LogOut className="w-4 h-4" /> Sign Out
+              </Button>
+            )}
           </CardFooter>
         </Card>
       )}
